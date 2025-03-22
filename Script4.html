@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        .task-input {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input, button {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #eee;
+            margin: 5px 0;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 5px;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+        .actions button {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do List</h1>
+        <div class="task-input">
+            <input type="text" id="task" placeholder="Enter a task">
+            <input type="datetime-local" id="taskTime">
+            <button onclick="addTask()">Add Task</button>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+    
+    <script>
+        function addTask() {
+            let taskText = document.getElementById('task').value;
+            let taskTime = document.getElementById('taskTime').value;
+            if (taskText === '') return;
+            
+            let li = document.createElement('li');
+            li.innerHTML = `${taskText} <small>${taskTime}</small> 
+                <div class="actions">
+                    <button onclick="markCompleted(this)">✔</button>
+                    <button onclick="editTask(this)">✏</button>
+                    <button onclick="removeTask(this)">❌</button>
+                </div>`;
+            document.getElementById('taskList').appendChild(li);
+            document.getElementById('task').value = '';
+            document.getElementById('taskTime').value = '';
+        }
+        
+        function markCompleted(button) {
+            let li = button.parentElement.parentElement;
+            li.classList.toggle('completed');
+        }
+        
+        function editTask(button) {
+            let li = button.parentElement.parentElement;
+            let newText = prompt('Edit task:', li.childNodes[0].nodeValue.trim());
+            if (newText) li.childNodes[0].nodeValue = newText;
+        }
+        
+        function removeTask(button) {
+            button.parentElement.parentElement.remove();
+        }
+    </script>
+</body>
+</html>
